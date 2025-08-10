@@ -26,7 +26,7 @@ const RecentApplications = () => {
   const [showAll, setShowAll] = useState(false);
 
   return (
-    <div className="bg-white mt-8 p-4 md:p-6 rounded-lg mb-8">
+    <div className="bg-white shadow-sm mt-8 p-4 md:p-6 rounded-lg ">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-gray-800">Recent Applicants</h2>
         <button

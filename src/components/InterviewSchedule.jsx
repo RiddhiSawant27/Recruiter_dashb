@@ -33,7 +33,7 @@ const InterviewSchedule = () => {
   ];
 
   return (
-    <div className="bg-white p-6 rounded-lg mb-8 mt-8 md:p-4 ">
+    <div className="bg-white p-6 shadow-sm rounded-lg mb-8 md:p-4 ">
 
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-gray-800">Interview Schedule</h2>

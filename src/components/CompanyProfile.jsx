@@ -5,7 +5,7 @@ import { UserCircle } from 'lucide-react';
 
 const CompanyProfile = () => {
      return (
-    <div className="bg-white p-6 rounded-lg mt-8 mb-8">
+    <div className="bg-white p-6 rounded-lg shadow-sm mt-8 mb-8">
 
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-gray-800">Company Profile</h2>

@@ -35,7 +35,7 @@ const JobPostings = () => {
   ];
 
   return (
-    <div className="bg-white p-4 md:p-6 rounded-lg relative">
+    <div className="bg-white shadow-sm p-4 md:p-6 rounded-lg relative">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4">
         <h2 className="text-xl font-bold text-gray-800">Job Postings</h2>
         <button className="bg-blue-600 text-sm text-white px-4 py-2 rounded-lg hover:bg-blue-700 hover:cursor-pointer mt-2 sm:mt-0" onClick={() => setShowCreateJob(true)}> + Create Job</button>

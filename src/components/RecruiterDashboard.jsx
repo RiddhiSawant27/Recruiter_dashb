@@ -29,7 +29,7 @@ const initialJobs = [
 const RecruiterDashboard = () => {
     const mainContainer = useRef(null);
 
-    // --- STATE MANAGEMENT for Modals & Data ---
+    // --- STATE MANAGEMENT ---
     const [jobs, setJobs] = useState(initialJobs);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [editingJob, setEditingJob] = useState(null);
@@ -43,47 +43,30 @@ const RecruiterDashboard = () => {
     // --- ANIMATIONS ---
     useLayoutEffect(() => {
         const ctx = gsap.context(() => {
-            gsap.from('.header-animation', { y: -100, opacity: 0, duration: 0.8, ease: 'power3.out', delay: 0.2 });
+            // Animate the header on page load
+            gsap.from('.header-animation', {
+                y: -80,
+                opacity: 0,
+                duration: 0.8,
+                ease: 'power3.out',
+                delay: 0.05
+            });
 
-            // Using matchMedia for responsive animations
-            ScrollTrigger.matchMedia({
-                
-                // Desktop animation settings
-                '(min-width: 1024px)': function () {
-                    gsap.utils.toArray('.animated-section').forEach(section => {
-                        gsap.from(section, {
-                            opacity: 0,
-                            y: 50,
-                            duration: 0.6,
-                            ease: 'power2.out',
-                            scrollTrigger: {
-                                trigger: section,
-                                // MODIFIED: Triggers when the top of the element is 95% down the screen
-                                // (i.e., just entering the viewport)
-                                start: 'top 95%',
-                                toggleActions: 'play none none reverse'
-                            }
-                        });
-                    });
-                },
+            // Scroll animations
+            const animatedSections = gsap.utils.toArray('.stats-section, .main-content-section, .sidebar-section');
 
-                // Mobile animation settings (often needs to trigger slightly earlier)
-                '(max-width: 1023px)': function () {
-                    gsap.utils.toArray('.animated-section').forEach(section => {
-                        gsap.from(section, {
-                            opacity: 0,
-                            y: 40,
-                            duration: 0.5,
-                            ease: 'power2.out',
-                            scrollTrigger: {
-                                trigger: section,
-                                // MODIFIED: Same as desktop, triggers much sooner
-                                start: 'top 95%',
-                                toggleActions: 'play none none reverse'
-                            }
-                        });
-                    });
-                },
+            animatedSections.forEach(section => {
+                gsap.from(section, {
+                    opacity: 0,
+                    y: 20, // smaller offset to prevent extra scroll height
+                    scrollTrigger: {
+                        trigger: section,
+                        start: 'top 97%', // earlier trigger, less gap before anim
+                        toggleActions: 'play none none reverse',
+                    },
+                    duration: 1.5,
+                    ease: 'power3.out',
+                });
             });
 
         }, mainContainer);
@@ -92,35 +75,79 @@ const RecruiterDashboard = () => {
 
     // --- HANDLER FUNCTIONS ---
     const handleSaveJob = (formData) => {
-        const jobDataToSave = { title: formData.jobTitle, department: formData.department, experience: formData.experience, workType: formData.workType, location: formData.workType === 'Full-time' ? 'Hybrid' : 'Remote', description: formData.jobDescription };
-        if (editingJob) { setJobs(currentJobs => currentJobs.map((job, index) => index === editingJob.index ? { ...job, ...jobDataToSave } : job)); }
-        else { const newJob = { ...jobDataToSave, applications: 0, shortlisted: 0, posted: 'Just now', statusColor: 'bg-green-400' }; setJobs(currentJobs => [newJob, ...currentJobs]); }
+        const jobDataToSave = { 
+            title: formData.jobTitle, 
+            department: formData.department, 
+            experience: formData.experience, 
+            workType: formData.workType, 
+            location: formData.workType === 'Full-time' ? 'Hybrid' : 'Remote', 
+            description: formData.jobDescription 
+        };
+        if (editingJob) { 
+            setJobs(currentJobs => currentJobs.map((job, index) => index === editingJob.index ? { ...job, ...jobDataToSave } : job)); 
+        } else { 
+            const newJob = { ...jobDataToSave, applications: 0, shortlisted: 0, posted: 'Just now', statusColor: 'bg-green-400' }; 
+            setJobs(currentJobs => [newJob, ...currentJobs]); 
+        }
         setIsCreateModalOpen(false);
     };
-    const handleOpenEditModal = (index) => { setEditingJob({ ...jobs[index], index }); setIsCreateModalOpen(true); };
+    const handleOpenEditModal = (index) => { 
+        setEditingJob({ ...jobs[index], index }); 
+        setIsCreateModalOpen(true); 
+    };
     const handleConfirmDelete = () => {
-        if (jobToDeleteIndex !== null) { setJobs(currentJobs => currentJobs.filter((_, index) => index !== jobToDeleteIndex)); }
-        setIsDeleteModalOpen(false); setJobToDeleteIndex(null);
+        if (jobToDeleteIndex !== null) { 
+            setJobs(currentJobs => currentJobs.filter((_, index) => index !== jobToDeleteIndex)); 
+        }
+        setIsDeleteModalOpen(false); 
+        setJobToDeleteIndex(null);
     };
 
     return (
-        <div ref={mainContainer} className="flex-1 flex flex-col min-h-screen bg-gray-50">
-            <div className="header-animation"> <Header /> </div>
-            <main className="flex-1 p-4 md:p-8">
-                <div className="animated-section"> <Stats /> </div>
+        <div ref={mainContainer} className="flex-1 flex flex-col min-h-screen bg-gray-50 overflow-x-hidden p-6">
+            <div className="header-animation w-full">
+                <div className="w-full max-w-7xl mx-auto ">
+                    <Header />
+                </div>
+            </div>
+
+            <main className="flex-1 p-4 md:p-8 w-full max-w-7xl mx-auto">
+                <div className="stats-section">
+                    <Stats />
+                </div>
+
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
                     <div className="lg:col-span-2 space-y-8">
-                        <div className="animated-section">
-                            <JobPostings jobs={jobs} onEdit={handleOpenEditModal} onDelete={(index) => { setJobToDeleteIndex(index); setIsDeleteModalOpen(true); }} onCreate={() => { setEditingJob(null); setIsCreateModalOpen(true); }} />
+                        <div className="main-content-section">
+                            <JobPostings 
+                                jobs={jobs} 
+                                onEdit={handleOpenEditModal} 
+                                onDelete={(index) => { setJobToDeleteIndex(index); setIsDeleteModalOpen(true); }} 
+                                onCreate={() => { setEditingJob(null); setIsCreateModalOpen(true); }} 
+                            />
                         </div>
-                        <div className="animated-section">
-                            <RecentApplications onViewResume={() => setIsViewResumeModalOpen(true)} onViewAll={() => setIsViewAllModalOpen(true)} />
+                        <div className="main-content-section">
+                            <RecentApplications 
+                                onViewResume={() => setIsViewResumeModalOpen(true)} 
+                                onViewAll={() => setIsViewAllModalOpen(true)} 
+                            />
                         </div>
                     </div>
                     <div className="right-sidebar space-y-8">
-                        <div className="animated-section"> <InterviewSchedule onSchedule={() => setIsScheduleModalOpen(true)} /> </div>
-                        <div className="animated-section"> <QuickActions onCreateJob={() => { setEditingJob(null); setIsCreateModalOpen(true); }} onScheduleInterview={() => setIsScheduleModalOpen(true)} onViewApplicants={() => setIsViewAllModalOpen(true)} onDownloadReport={() => setIsDownloadModalOpen(true)} /> </div>
-                        <div className="animated-section"> <CompanyProfile /> </div>
+                        <div className="sidebar-section"> 
+                            <InterviewSchedule onSchedule={() => setIsScheduleModalOpen(true)} /> 
+                        </div>
+                        <div className="sidebar-section"> 
+                            <QuickActions 
+                                onCreateJob={() => { setEditingJob(null); setIsCreateModalOpen(true); }} 
+                                onScheduleInterview={() => setIsScheduleModalOpen(true)} 
+                                onViewApplicants={() => setIsViewAllModalOpen(true)} 
+                                onDownloadReport={() => setIsDownloadModalOpen(true)} 
+                            /> 
+                        </div>
+                        <div className="sidebar-section"> 
+                            <CompanyProfile /> 
+                        </div>
                     </div>
                 </div>
             </main>

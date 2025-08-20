@@ -2,7 +2,7 @@ import React from 'react';
 import { UserRoundPen, UserCircle } from 'lucide-react';
 
 const CompanyProfile = () => {
-     return (
+  return (
     <div className="bg-white p-6 rounded-lg shadow-sm">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-bold text-gray-800">Company Profile</h2>
@@ -19,7 +19,7 @@ const CompanyProfile = () => {
         <div className="flex justify-between"><p className="text-gray-500">Industry</p><p className="font-medium">Technology</p></div>
         <div className="flex justify-between"><p className="text-gray-500">Size</p><p className="font-medium">500-1000</p></div>
         <div className="flex justify-between"><p className="text-gray-500">Location</p><p className="font-medium">San Francisco</p></div>
-     </div>
+    </div>
     </div>
     );
 };

@@ -1,6 +1,5 @@
-// App.jsx
 import React from 'react';
-import './App.css'; // your custom styles
+import './App.css';
 import RecruiterDashboard from './components/RecruiterDashboard';
 
 function App() {

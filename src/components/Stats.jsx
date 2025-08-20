@@ -2,10 +2,15 @@ import React from 'react';
 import { Briefcase, Users, CheckSquare, Calendar } from 'lucide-react';
 
 const StatCard = ({ icon, value, label, color }) => (
-  <div className="stat-card bg-white p-4 sm:p-6 rounded-lg flex items-center shadow-sm w-full min-w-0">
-    <div className={`p-3 sm:p-4 rounded-lg ${color} flex-shrink-0`}> {icon} </div>
+  // h-full is still needed here
+  <div className="stat-card bg-white p-4 sm:p-6 rounded-lg flex items-center shadow-sm w-full min-w-0 h-full">
+    <div className={`p-3 sm:p-4 rounded-lg ${color} flex-shrink-0`}>
+      {icon}
+    </div>
     <div className="ml-3 sm:ml-4">
-      <p className="stat-number text-2xl sm:text-3xl font-bold text-gray-800 leading-none"> {value} </p>
+      <p className="stat-number text-2xl sm:text-3xl font-bold text-gray-800 leading-none">
+        {value}
+      </p>
       <p className="text-xs sm:text-sm text-gray-500 mt-1">{label}</p>
     </div>
   </div>
@@ -19,7 +24,8 @@ const Stats = () => {
     { icon: <Calendar size={20} className="text-orange-600" />, value: 18, label: 'Interviews', color: 'bg-orange-100' },
   ];
   return (
-    <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4 mb-8">
+    // Replace "items-stretch" with the more robust "auto-rows-fr"
+    <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4 mb-8 auto-rows-fr">
       {statsData.map((stat, index) => <StatCard key={index} {...stat} />)}
     </div>
   );

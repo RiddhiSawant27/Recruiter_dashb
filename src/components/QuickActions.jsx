@@ -1,7 +1,7 @@
 import React from 'react';
 import { PlusCircle, Users, Calendar, Download, ChevronRight } from 'lucide-react';
 
-const QuickActions = ({ onCreateJob, onScheduleInterview, onViewApplicants, onDownloadReport }) => {
+const QuickActions = ({ onCreateJob, onViewApplicants, onDownloadReport }) => {
     const actions = [
         {
             icon: PlusCircle,
@@ -22,7 +22,7 @@ const QuickActions = ({ onCreateJob, onScheduleInterview, onViewApplicants, onDo
         {
             icon: Calendar,
             text: 'Schedule Interview',
-            action: onScheduleInterview,
+            action: null, 
             textColor: 'text-purple-600',
             bgColor: 'bg-purple-50',
             hoverBg: 'hover:bg-purple-100',
@@ -47,7 +47,7 @@ const QuickActions = ({ onCreateJob, onScheduleInterview, onViewApplicants, onDo
                         <button
                             key={index}
                             onClick={action.action}
-                            
+                            // Removed disabled attribute and styling logic
                             className={`w-full flex items-center p-3 rounded-lg transition-all duration-200 ${action.bgColor} ${action.hoverBg} cursor-pointer hover:shadow-md`}
                         >
                             <span className={`${action.textColor}`}>
